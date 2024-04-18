@@ -45,6 +45,7 @@ def load_existing_data(filepath):
         logging.error(f"JSON decode error: {e}")
         return []
 
+# Save new data to a file
 def save_data(filepath, new_data):
     existing_data = load_existing_data(filepath)
     if any(query.get('Search Query') == new_data.get('Search Query') for query in existing_data):
@@ -54,6 +55,7 @@ def save_data(filepath, new_data):
     with open(filepath, "w") as file:
         json.dump(existing_data, file, indent=2)
 
+# Format video data
 def format_video_data(item):
     video_data = item['snippet']
     video_id = item['id']['videoId']
@@ -66,6 +68,7 @@ def format_video_data(item):
         'url': f'https://www.youtube.com/watch?v={video_id}'  # Constructing the URL
     }
 
+# Safe API call function with retries
 def safe_api_call(call, max_retries=3):
     for _ in range(max_retries):
         try:
@@ -77,6 +80,7 @@ def safe_api_call(call, max_retries=3):
                 raise
     return None
 
+# Search YouTube videos
 def search_youtube(query, max_results):
     def api_call():
         return youtube.search().list(
@@ -103,6 +107,7 @@ def search_youtube(query, max_results):
     }
     save_data('youtube_videos.json', data)
 
+# Main function
 def main():
     args = get_args()
     search_youtube(args.query, args.max_results)
