@@ -35,3 +35,6 @@ If you are sure that the described cause is not responsible for this error and t
 2024-04-17 17:43:33 - ERROR - YoutubeSerach.py:89 - Failed to complete search: string indices must be integers, not 'str'
 2024-04-17 17:46:08 - ERROR - YoutubeSerach.py:95 - Failed to complete search: string indices must be integers, not 'str'
 2024-04-17 17:49:40 - ERROR - YoutubeSerach.py:110 - Failed to complete search due to an unexpected error: string indices must be integers, not 'str'
+2024-04-17 19:13:08 - ERROR - YoutubeSerach.py:110 - Failed to complete search due to an unexpected error: string indices must be integers, not 'str'
+2024-04-17 19:13:54 - ERROR - YoutubeSerach.py:110 - Failed to complete search due to an unexpected error: string indices must be integers, not 'str'
+2024-04-17 22:44:20 - INFO - YoutubeSerach.py:51 - Search query 'python tips' already exists.

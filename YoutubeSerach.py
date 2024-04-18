@@ -3,113 +3,109 @@ from googleapiclient.errors import HttpError
 import json
 import logging
 from datetime import datetime
+import os
+import argparse
+import time
 
-# Setup logging with file name and line number
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',  # Custom date format
-                    handlers=[
-                        logging.FileHandler("error_log.log"),
-                        logging.StreamHandler()
-                    ])
+# Setup logging
+logging.basicConfig(
+    filename='error_log.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
-# Your API Key and YouTube API service name and version
-api_key = 'AIzaSyC7vmoM4nmnCaKPgGuFArBTt-fmafNjS98'
+# Command line argument setup
+def get_args():
+    parser = argparse.ArgumentParser(description='Search YouTube Videos')
+    parser.add_argument('query', help='Search query term')
+    parser.add_argument('--max_results', type=int, default=5, help='Maximum number of results to return')
+    parser.add_argument('--duration', choices=['short', 'medium', 'long'], default='medium', help='Duration of videos')
+    parser.add_argument('--region', default='US', help='Region code for search results')
+    return parser.parse_args()
+
+# Get the API key from the environment variables
+api_key = os.getenv('YOUTUBE_API_KEY')
+if not api_key:
+    raise ValueError("API key is not set in environment variables")
+
 youtube = build('youtube', 'v3', developerKey=api_key, cache_discovery=False)
 
+# Load existing data from a file
 def load_existing_data(filepath):
     try:
         with open(filepath, "r") as file:
             data = file.read()
-            if not data:  # Check if the file is empty
+            if not data:  # Checks if the file is empty
                 return []
             return json.loads(data)
     except FileNotFoundError:
         return []
     except json.JSONDecodeError as e:
-        logging.error(f"JSON decode error in {filepath}: {str(e)}")
-        return []  # Return empty list if the file is corrupted
+        logging.error(f"JSON decode error: {e}")
+        return []
 
 def save_data(filepath, new_data):
     existing_data = load_existing_data(filepath)
-    # Check if the query already exists
-    if any(query['Search Query'] == new_data['Search Query'] for query in existing_data):
-        logging.info(f"Search query '{new_data['Search Query']}' already exists.")
+    if any(query.get('Search Query') == new_data.get('Search Query') for query in existing_data):
+        logging.info(f"Search query '{new_data.get('Search Query')}' already exists.")
         return
     existing_data.append(new_data)
     with open(filepath, "w") as file:
         json.dump(existing_data, file, indent=2)
 
-def youtube_search(query, max_results=5):
-    try:
-        search_response = youtube.search().list(
+def format_video_data(item):
+    video_data = item['snippet']
+    video_id = item['id']['videoId']
+    return {
+        'channel_name': video_data['channelTitle'],  # 'channelTitle' is the key for channel name
+        'video_title': video_data['title'],  # 'title' is the key for video title
+        'video_id': video_id,  # 'videoId' is the key for video ID
+        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # Formatted timestamp
+        'playlist_id': item['id']['playlistId'] if 'playlistId' in item['id'] else None, # 'playlistId' is the key for playlist ID
+        'url': f'https://www.youtube.com/watch?v={video_id}'  # Constructing the URL
+    }
+
+def safe_api_call(call, max_retries=3):
+    for _ in range(max_retries):
+        try:
+            return call()
+        except HttpError as e:
+            if e.resp.status in [403, 429]:
+                time.sleep(10) 
+            else:
+                raise
+    return None
+
+def search_youtube(query, max_results):
+    def api_call():
+        return youtube.search().list(
             q=query,
             part='id,snippet',
             maxResults=max_results,
             type='video'
         ).execute()
-    except HttpError as e:
-        logging.error(f"HTTP error occurred: {e.resp.status} - {e}")
-        return
-    except Exception as e:
-        logging.error(f"Unexpected error occurred: {e}")
-        return
 
-    videos = []
-    # Check if 'items' is present in the response
-    if 'items' not in search_response:
-        logging.error(f"No 'items' in search response: {search_response}")
+    search_response = safe_api_call(api_call)
+    if not search_response:
+        logging.error("API call failed after retries")
         return
 
-    # Extracting information from each video result
-    for search_result in search_response['items']:
-        if 'snippet' not in search_result or 'id' not in search_result:
-            logging.error(f"Missing 'snippet' or 'id' in search_result: {search_result}")
-            continue
-
-        video_data = search_result['snippet']
-        id_info = search_result['id']
-
-        # Validate expected types and contents
-        if not isinstance(video_data, dict) or not isinstance(id_info, dict):
-            logging.error(f"Expected dict for 'snippet' and 'id'. Got {type(video_data)} and {type(id_info)}")
-            continue
-
-        video_id = id_info.get('videoId', None)
-        if not video_id:
-            logging.error(f"No 'videoId' found in 'id' field: {id_info}")
-            continue
-
-        video = {
-            'Video Name': video_data.get('title', 'Unknown title'),
-            'Channel Creator Name': video_data.get('channelTitle', 'Unknown channel'),
-            'Date Added to YouTube': video_data.get('publishedAt', 'Unknown date').split('T')[0],
-            'Video ID': video_id,
-            'Link to the Video': f"https://www.youtube.com/watch?v={video_id}"
-        }
-        videos.append(video)
-
+    videos = [format_video_data(item) for item in search_response.get('items', [])]
     if not videos:
         logging.info(f"No valid videos found for query: {query}")
         return
 
-    # Create a dictionary to hold the search query and the videos with a timestamp
     data = {
         'Search Query': query,
-        'Timestamp': datetime.now().isoformat(),
+        'Timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # Formatted timestamp
         'Videos': videos
     }
-
-    # Save the data
     save_data('youtube_videos.json', data)
 
 def main():
-    try:
-        youtube_search("networkchuck windows server")
-    except Exception as e:
-        logging.error(f"Failed to complete search due to an unexpected error: {e}")
+    args = get_args()
+    search_youtube(args.query, args.max_results)
 
 if __name__ == "__main__":
     main()
-
-

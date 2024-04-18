@@ -1,40 +1,94 @@
-{
-  "Search Query": "networkchuck windows server",
-  "Videos": [
-    {
-      "Video Name": "you NEED to learn Windows RIGHT NOW!!",
-      "Channel Creator Name": "NetworkChuck",
-      "Date Added to YouTube": "2023-06-28",
-      "Video ID": "X1CM3rZwGn8",
-      "Link to the Video": "https://www.youtube.com/watch?v=X1CM3rZwGn8"
-    },
-    {
-      "Video Name": "40 Windows Commands you NEED to know (in 10 Minutes)",
-      "Channel Creator Name": "NetworkChuck",
-      "Date Added to YouTube": "2022-09-30",
-      "Video ID": "Jfvg3CS1X3A",
-      "Link to the Video": "https://www.youtube.com/watch?v=Jfvg3CS1X3A"
-    },
-    {
-      "Video Name": "30 Windows Commands you CAN\u2019T live without",
-      "Channel Creator Name": "NetworkChuck",
-      "Date Added to YouTube": "2023-03-27",
-      "Video ID": "prVHU1fLR20",
-      "Link to the Video": "https://www.youtube.com/watch?v=prVHU1fLR20"
-    },
-    {
-      "Video Name": "how to HACK a password // Windows Edition",
-      "Channel Creator Name": "NetworkChuck",
-      "Date Added to YouTube": "2023-06-30",
-      "Video ID": "L26Xq7m0uQ0",
-      "Link to the Video": "https://www.youtube.com/watch?v=L26Xq7m0uQ0"
-    },
-    {
-      "Video Name": "Network Chuck",
-      "Channel Creator Name": "NetworkChuck",
-      "Date Added to YouTube": "2014-10-04",
-      "Video ID": "ZR7_D1V3zD0",
-      "Link to the Video": "https://www.youtube.com/watch?v=ZR7_D1V3zD0"
-    }
-  ]
-}
+[
+  {
+    "Search Query": "python tips",
+    "Timestamp": "2024-04-17 22:55:59",
+    "Videos": [
+      {
+        "channel_name": "Corey Schafer",
+        "video_title": "10 Python Tips and Tricks For Writing Better Code",
+        "video_id": "C-gEQdGVXbk",
+        "timestamp": "2024-04-17 22:55:59",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=C-gEQdGVXbk"
+      },
+      {
+        "channel_name": "Tech With Tim",
+        "video_title": "10 ULTIMATE Python Tips \ud83d\udd25",
+        "video_id": "3cUkvFKYbHE",
+        "timestamp": "2024-04-17 22:55:59",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=3cUkvFKYbHE"
+      },
+      {
+        "channel_name": "mCoding",
+        "video_title": "25 nooby Python habits you need to ditch",
+        "video_id": "qUeud6DvOWI",
+        "timestamp": "2024-04-17 22:55:59",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=qUeud6DvOWI"
+      },
+      {
+        "channel_name": "Patrick Loeber",
+        "video_title": "11 Tips And Tricks To Write Better Python Code",
+        "video_id": "8OKTAedgFYg",
+        "timestamp": "2024-04-17 22:55:59",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=8OKTAedgFYg"
+      },
+      {
+        "channel_name": "Indently",
+        "video_title": "5 Tips To Write Better Python Functions",
+        "video_id": "7fSHTqM8gHs",
+        "timestamp": "2024-04-17 22:55:59",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=7fSHTqM8gHs"
+      }
+    ]
+  },
+  {
+    "Search Query": "python tricks",
+    "Timestamp": "2024-04-17 22:59:19",
+    "Videos": [
+      {
+        "channel_name": "Aaron Jack",
+        "video_title": "5 Python tricks that will improve your life",
+        "video_id": "5tcs2qXP3Pg",
+        "timestamp": "2024-04-17 22:59:19",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=5tcs2qXP3Pg"
+      },
+      {
+        "channel_name": "Patrick Loeber",
+        "video_title": "11 Tips And Tricks To Write Better Python Code",
+        "video_id": "8OKTAedgFYg",
+        "timestamp": "2024-04-17 22:59:19",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=8OKTAedgFYg"
+      },
+      {
+        "channel_name": "Corey Schafer",
+        "video_title": "10 Python Tips and Tricks For Writing Better Code",
+        "video_id": "C-gEQdGVXbk",
+        "timestamp": "2024-04-17 22:59:19",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=C-gEQdGVXbk"
+      },
+      {
+        "channel_name": "Tech With Tim",
+        "video_title": "10 ULTIMATE Python Tips \ud83d\udd25",
+        "video_id": "3cUkvFKYbHE",
+        "timestamp": "2024-04-17 22:59:19",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=3cUkvFKYbHE"
+      },
+      {
+        "channel_name": "mCoding",
+        "video_title": "25 nooby Python habits you need to ditch",
+        "video_id": "qUeud6DvOWI",
+        "timestamp": "2024-04-17 22:59:19",
+        "playlist_id": null,
+        "url": "https://www.youtube.com/watch?v=qUeud6DvOWI"
+      }
+    ]
+  }
+]
